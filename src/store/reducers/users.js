@@ -1,11 +1,11 @@
 import { FETCH_USERS } from "../actions/users";
 
 export default function users(state = {}, action) {
-  switch (action) {
+  switch (action.type) {
     case FETCH_USERS:
       return {
         ...state,
-        ...state.users
+        ...action.users
       };
     default:
       return state;
