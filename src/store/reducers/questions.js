@@ -1,11 +1,11 @@
 import { FETCH_QUESTIONS } from "../actions/questions";
 
 export default function questions(state = {}, action) {
-  switch (action) {
+  switch (action.type) {
     case FETCH_QUESTIONS:
       return {
         ...state,
-        ...state.questions
+        ...action.questions
       };
     default:
       return state;
