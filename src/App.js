@@ -15,7 +15,6 @@ class App extends Component {
       <Router>
         <Fragment>
           <div className="main">
-            {/* Nav */}
             {/* Router */}
             <Switch>
               {routes.map((route, key) => (
