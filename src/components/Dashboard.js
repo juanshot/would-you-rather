@@ -1,27 +1,28 @@
-import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import WithNavBar from './hoc/WithNavbar';
-import TabPanel from './parts/TabPanel'
-import QuestionList from './parts/QuestionList'
+import React from "react";
+import { connect } from "react-redux";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import WithNavBar from "./hoc/WithNavbar";
+import TabPanel from "./parts/TabPanel";
+import QuestionList from "./parts/QuestionList";
 
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
+    "aria-controls": `full-width-tabpanel-${index}`,
   };
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: 'none',
-    width: '100%',
+    backgroundColor: "none",
+    width: "100%",
   },
 }));
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -33,7 +34,7 @@ const Dashboard = () => {
   return (
     <WithNavBar>
       <div className={classes.root}>
-        <AppBar position="static" color="default">
+        <AppBar elevation={0} position="static" color="default">
           <Tabs
             value={value}
             onChange={handleChange}
@@ -47,14 +48,28 @@ const Dashboard = () => {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <QuestionList />
+          <QuestionList questions={props.answeredQuestions} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <QuestionList />
+          <QuestionList questions={props.unAnsweredQuestions} />
         </TabPanel>
       </div>
     </WithNavBar>
-  )
-}
+  );
+};
 
-export default Dashboard
+const mapStateToProps = ({ questions, users }) => {
+  const mappedQuestionsWithUsers = Object.keys(questions).map(
+    (questionKey) => ({
+      ...questions[questionKey],
+      id: questionKey,
+      author: users[questions[questionKey].author],
+    })
+  );
+  return {
+    answeredQuestions: mappedQuestionsWithUsers,
+    unAnsweredQuestions: mappedQuestionsWithUsers,
+  };
+};
+
+export default connect(mapStateToProps)(Dashboard);
