@@ -1,4 +1,4 @@
-import { _getQuestions, _getUsers } from "./_DATA";
+import { _getQuestions, _getUsers, _saveQuestion } from "./_DATA";
 
 export const getInitialData = () => {
   return Promise.all([_getUsers(), _getQuestions()]).then(
@@ -7,3 +7,7 @@ export const getInitialData = () => {
     }
   );
 };
+
+export const saveQuestion = (question) => {
+  return _saveQuestion(question)
+}

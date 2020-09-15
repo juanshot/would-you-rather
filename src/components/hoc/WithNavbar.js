@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import { setAuthedUser } from "./../../store/actions/authedUser";
+import Spinner from '../parts/Spinner';
 import NAVIGATION from '../../constants/navigation';
 
 function a11yProps(index) {
@@ -42,6 +44,7 @@ function WithNavBar(props) {
   return (
     redirect ? <Redirect to={'/'} /> :
       <section className={classes.root}>
+        {/* App Bar */}
         <AppBar className={classes.appBar} position="static">
           <Tabs value={props.history.location.pathname} onChange={handleChange} aria-label="option tabs">
             {
@@ -54,9 +57,16 @@ function WithNavBar(props) {
             <Tab label="Logout" value="/" onClick={handleLogout} />
           </Tabs>
         </AppBar>
-        {props.children}
+        {/* Loading Spinner */}
+        {props.isLoading && <Spinner />}
+        {/* Content */}
+        <Box m={4}>
+          {props.children}
+        </Box>
       </section>
   );
 }
-
-export default connect()(withRouter(WithNavBar));
+const mapStateToProps = ({ system }) => ({
+  isLoading: system.isLoading
+})
+export default connect(mapStateToProps)(withRouter(WithNavBar));
