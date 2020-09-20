@@ -1,17 +1,17 @@
 export default [
   {
-    label: 'Dashboard',
-    path: '/dashboard',
-    component: 'Dashboard'
+    label: "Dashboard",
+    path: "/dashboard",
+    component: "Dashboard",
   },
   {
-    label: 'Leaderboard',
-    path: '/leaders',
-    component: 'Leaderboard'
+    label: "Leaderboard",
+    path: "/leaders",
+    component: "Leaderboard",
   },
   {
-    label: 'New Question',
-    path: '/new-question',
-    component: 'QuestionForm'
-  }
-]
+    label: "New Question",
+    path: "/new-question",
+    component: "QuestionForm",
+  },
+];

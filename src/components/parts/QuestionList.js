@@ -27,7 +27,7 @@ const QuestionList = (props) => {
     <List component="nav" className={classes.root}>
       {props.questions.map((question, key) => (
         <React.Fragment key={key}>
-          <ListItem button>
+          <ListItem button onClick={() => props.onSelect(question.id)}>
             <ListItemAvatar>
               <Avatar src={question.author.avatarURL}></Avatar>
             </ListItemAvatar>

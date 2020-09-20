@@ -1,12 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
+import Dialog from "@material-ui/core/Dialog";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import WithNavBar from "./hoc/WithNavbar";
 import TabPanel from "./parts/TabPanel";
 import QuestionList from "./parts/QuestionList";
+import QuestionDetail from "./QuestionDetail";
+
+import { checkIfUserHasAnswered } from "./../utilities/validators";
+import { sortByTimestamp } from "./../utilities/formatters";
 
 function a11yProps(index) {
   return {
@@ -25,10 +31,21 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = (props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [tabValue, setTabValue] = React.useState(0);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [currentQuestionId, setCurrentQuestionId] = React.useState(null);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleTabChange = (_, newValue) => {
+    setTabValue(newValue);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleSelect = (id) => {
+    setCurrentQuestionId(id);
+    setDialogOpen(true);
   };
 
   return (
@@ -36,8 +53,8 @@ const Dashboard = (props) => {
       <div className={classes.root}>
         <AppBar elevation={0} position="static" color="default">
           <Tabs
-            value={value}
-            onChange={handleChange}
+            value={tabValue}
+            onChange={handleTabChange}
             indicatorColor="primary"
             textColor="primary"
             variant="fullWidth"
@@ -47,18 +64,32 @@ const Dashboard = (props) => {
             <Tab label="Not Answered" {...a11yProps(1)} />
           </Tabs>
         </AppBar>
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <QuestionList questions={props.answeredQuestions} />
+        <TabPanel value={tabValue} index={0} dir={theme.direction}>
+          <QuestionList
+            questions={props.answeredQuestions}
+            onSelect={handleSelect}
+          />
         </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <QuestionList questions={props.unAnsweredQuestions} />
+        <TabPanel value={tabValue} index={1} dir={theme.direction}>
+          <QuestionList
+            questions={props.unAnsweredQuestions}
+            onSelect={handleSelect}
+          />
         </TabPanel>
       </div>
+      {/* Question Detail */}
+      <Dialog
+        onClose={handleDialogClose}
+        aria-labelledby="simple-dialog-title"
+        open={dialogOpen}
+      >
+        <QuestionDetail questionId={currentQuestionId} />
+      </Dialog>
     </WithNavBar>
   );
 };
 
-const mapStateToProps = ({ questions, users }) => {
+const mapStateToProps = ({ authedUser, questions, users }) => {
   const mappedQuestionsWithUsers = Object.keys(questions).map(
     (questionKey) => ({
       ...questions[questionKey],
@@ -67,9 +98,15 @@ const mapStateToProps = ({ questions, users }) => {
     })
   );
   return {
-    answeredQuestions: mappedQuestionsWithUsers,
-    unAnsweredQuestions: mappedQuestionsWithUsers,
+    answeredQuestions: mappedQuestionsWithUsers
+      .filter(checkIfUserHasAnswered(authedUser))
+      .sort(sortByTimestamp),
+    unAnsweredQuestions: mappedQuestionsWithUsers
+      .filter((question) => {
+        return !checkIfUserHasAnswered(authedUser)(question);
+      })
+      .sort(sortByTimestamp),
   };
 };
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps)(withRouter(Dashboard));
