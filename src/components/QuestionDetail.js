@@ -7,10 +7,11 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 import UserOverview from "./parts/UserOverview";
+import QuestionAnswersDetail from "./parts/QuestionAnswersDetail";
+import QuestionOptions from "./parts/QuestionOptions";
 import { handleSaveQuestionAnswer } from "./../store/actions/questions";
 import { fromTimestampToDate } from "../utilities/formatters";
 import { checkIfUserHasAnswered } from "./../utilities/validators";
@@ -30,8 +31,8 @@ const useStyles = makeStyles({
 
 const QuestionDetail = (props) => {
   const classes = useStyles();
-  const optionOne = props.question.optionOne.text;
-  const optionTwo = props.question.optionTwo.text;
+  const optionOne = props.question.optionOne;
+  const optionTwo = props.question.optionTwo;
   const { author, id } = props.question;
   const { authedUser, dispatch } = props;
   const currentUserHasVoted = checkIfUserHasAnswered(authedUser)(
@@ -51,10 +52,12 @@ const QuestionDetail = (props) => {
   return (
     <Card className={classes.root}>
       <CardActionArea>
+        {/* User Info */}
         <UserOverview user={author} />
+        {/* Question Info */}
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {`${optionOne} OR ${optionTwo}`}
+            {`${optionOne.text} OR ${optionTwo.text}`}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="div">
             <Box>
@@ -63,27 +66,18 @@ const QuestionDetail = (props) => {
           </Typography>
         </CardContent>
       </CardActionArea>
+      {/* Show question results when the user has voted */}
+      {currentUserHasVoted && (
+        <QuestionAnswersDetail optionOne={optionOne} optionTwo={optionTwo} />
+      )}
+      {/* Actions */}
       <CardActions className={classes.questionChoices}>
-        {!currentUserHasVoted ? (
-          <React.Fragment>
-            <Button
-              size="large"
-              color="primary"
-              onClick={() => handleAnswer("optionOne")}
-            >
-              {optionOne}
-            </Button>
-            <Button
-              size="large"
-              color="primary"
-              onClick={() => handleAnswer("optionTwo")}
-            >
-              {optionTwo}
-            </Button>
-          </React.Fragment>
-        ) : (
-          <div>You have Voted!</div>
-        )}
+        <QuestionOptions
+          optionOne={optionOne}
+          optionTwo={optionTwo}
+          userHasVoted={currentUserHasVoted}
+          handleAnswer={handleAnswer}
+        ></QuestionOptions>
       </CardActions>
     </Card>
   );

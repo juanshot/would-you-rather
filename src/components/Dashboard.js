@@ -60,19 +60,19 @@ const Dashboard = (props) => {
             variant="fullWidth"
             aria-label="full width tabs example"
           >
-            <Tab label="Answered" {...a11yProps(0)} />
             <Tab label="Not Answered" {...a11yProps(1)} />
+            <Tab label="Answered" {...a11yProps(0)} />
           </Tabs>
         </AppBar>
         <TabPanel value={tabValue} index={0} dir={theme.direction}>
           <QuestionList
-            questions={props.answeredQuestions}
+            questions={props.unAnsweredQuestions}
             onSelect={handleSelect}
           />
         </TabPanel>
         <TabPanel value={tabValue} index={1} dir={theme.direction}>
           <QuestionList
-            questions={props.unAnsweredQuestions}
+            questions={props.answeredQuestions}
             onSelect={handleSelect}
           />
         </TabPanel>
