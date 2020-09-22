@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -7,10 +8,24 @@ import {
   DialogContent,
 } from "@material-ui/core";
 import DialogTitle from "./parts/DialogTitle";
-
 import NewUser from "./parts/NewUser";
+import { addUser } from "./../store/actions/users";
+import { formatUserRequest } from "./../utils/formatters";
 
 const RegistrationDialog = (props) => {
+  const [newUserReq, setNewUserReq] = useState({});
+  const isUserValid = () => {
+    const newUserReqValues = Object.values(newUserReq);
+    return (
+      newUserReqValues.length &&
+      newUserReqValues.every((value) => Boolean(value))
+    );
+  };
+  const saveUser = () => {
+    const { dispatch } = props;
+    dispatch(addUser(formatUserRequest(newUserReq)));
+    props.onChange(false);
+  };
   return (
     <Dialog
       onClose={() => props.onChange(false)}
@@ -21,11 +36,16 @@ const RegistrationDialog = (props) => {
     >
       <DialogTitle onClose={() => props.onChange(false)} />
       <DialogContent>
-        <NewUser />
+        <NewUser onChange={(user) => setNewUserReq(user)} />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => props.onChange(false)}>Cancel</Button>
-        <Button color="primary" autoFocus>
+        <Button
+          disabled={!isUserValid()}
+          color="primary"
+          autoFocus
+          onClick={saveUser}
+        >
           Create
         </Button>
       </DialogActions>
@@ -38,4 +58,4 @@ RegistrationDialog.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default RegistrationDialog;
+export default connect()(RegistrationDialog);

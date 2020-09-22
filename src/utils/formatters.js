@@ -4,3 +4,11 @@ export const fromTimestampToDate = (timestamp) => {
 };
 
 export const sortBy = (field) => (a, b) => b[field] - a[field];
+
+export const formatUserRequest = (user) => ({
+  [user.userNameValue]: {
+    id: user.userNameValue,
+    name: user.nameValue,
+    avatarURL: user.avatarURLValue,
+  },
+});

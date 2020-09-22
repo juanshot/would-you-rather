@@ -65,8 +65,8 @@ const UserSelector = (props) => {
             value={authedUser || ""}
             onChange={handleCurrentUserChange}
           >
-            {users.map((user) => (
-              <MenuItem key={user.id} value={user.id}>
+            {users.map((user, key) => (
+              <MenuItem key={key} value={user.id}>
                 <Chip
                   avatar={<Avatar alt={user.id} src={user.avatarURL} />}
                   label={user.name}
