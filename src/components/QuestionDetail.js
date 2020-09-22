@@ -13,8 +13,8 @@ import UserOverview from "./parts/UserOverview";
 import QuestionAnswersDetail from "./parts/QuestionAnswersDetail";
 import QuestionOptions from "./parts/QuestionOptions";
 import { handleSaveQuestionAnswer } from "./../store/actions/questions";
-import { fromTimestampToDate } from "../utilities/formatters";
-import { checkIfUserHasAnswered } from "./../utilities/validators";
+import { fromTimestampToDate } from "../utils/formatters";
+import { checkIfUserHasAnswered } from "./../utils/validators";
 
 const useStyles = makeStyles({
   root: {
@@ -84,7 +84,7 @@ const QuestionDetail = (props) => {
 };
 
 QuestionDetail.propTypes = {
-  questionId: PropTypes.string,
+  questionId: PropTypes.string.isRequired
 };
 
 const mapStateToProps = ({ questions, users, authedUser }, { questionId }) => ({

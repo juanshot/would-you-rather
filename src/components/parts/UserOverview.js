@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import {
   checkIfUserHasAnswered,
   checkIfUserIsAuthor,
-} from "./../../utilities/validators";
+} from "./../../utils/validators";
 
 const UserOverview = (props) => {
   return (

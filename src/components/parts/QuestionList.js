@@ -10,7 +10,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 
-import { fromTimestampToDate } from "../../utilities/formatters";
+import { fromTimestampToDate } from "../../utils/formatters";
 
 const useStyles = makeStyles((theme) => ({
   root: {

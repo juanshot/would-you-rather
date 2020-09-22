@@ -10,9 +10,10 @@ import WithNavBar from "./hoc/WithNavbar";
 import TabPanel from "./parts/TabPanel";
 import QuestionList from "./parts/QuestionList";
 import QuestionDetail from "./QuestionDetail";
+import DialogTitle from './parts/DialogTitle';
 
-import { checkIfUserHasAnswered } from "./../utilities/validators";
-import { sortByTimestamp } from "./../utilities/formatters";
+import { checkIfUserHasAnswered } from "./../utils/validators";
+import { sortBy } from "./../utils/formatters";
 
 function a11yProps(index) {
   return {
@@ -58,7 +59,7 @@ const Dashboard = (props) => {
             indicatorColor="primary"
             textColor="primary"
             variant="fullWidth"
-            aria-label="full width tabs example"
+            aria-label="full width tab"
           >
             <Tab label="Not Answered" {...a11yProps(1)} />
             <Tab label="Answered" {...a11yProps(0)} />
@@ -80,9 +81,11 @@ const Dashboard = (props) => {
       {/* Question Detail */}
       <Dialog
         onClose={handleDialogClose}
-        aria-labelledby="simple-dialog-title"
+        aria-labelledby="question-dialog"
         open={dialogOpen}
       >
+        <DialogTitle onClose={handleDialogClose}>
+        </DialogTitle>
         <QuestionDetail questionId={currentQuestionId} />
       </Dialog>
     </WithNavBar>
@@ -100,12 +103,12 @@ const mapStateToProps = ({ authedUser, questions, users }) => {
   return {
     answeredQuestions: mappedQuestionsWithUsers
       .filter(checkIfUserHasAnswered(authedUser))
-      .sort(sortByTimestamp),
+      .sort(sortBy('timestamp')),
     unAnsweredQuestions: mappedQuestionsWithUsers
       .filter((question) => {
         return !checkIfUserHasAnswered(authedUser)(question);
       })
-      .sort(sortByTimestamp),
+      .sort(sortBy('timestamp')),
   };
 };
 

@@ -1,15 +1,20 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import FormControl from "@material-ui/core/FormControl";
 import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
+import Dialog from "@material-ui/core/Dialog";
+
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
+
+import DialogTitle from './parts/DialogTitle';
 import { setAuthedUser } from "../store/actions/authedUser";
 
 const styles = (theme) => ({
@@ -27,29 +32,29 @@ const styles = (theme) => ({
   formControl: {
     width: "100%",
   },
+  signUpButton: {
+    marginTop: '15px',
+  }
 });
 
-class UserSelector extends Component {
-  state = {
-    currentUser: "",
-    redirect: false,
-  };
-  handleCurrentUserChange = (e) => {
+const UserSelector = (props) => {
+  const [newUserOpen, setNewUserOpen] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+  const { classes } = props;
+  const { users } = props;
+  const { authedUser } = props;
+  const handleCurrentUserChange = (e) => {
     const { value } = e.target;
-    const { dispatch } = this.props;
+    const { dispatch } = props;
     dispatch(setAuthedUser(value));
-    this.setState((state) => ({
-      ...state,
-      redirect: true,
-    }));
+    setRedirect(true);
   };
-  render() {
-    const { classes } = this.props;
-    const { users } = this.props;
-    const { authedUser } = this.props;
-    return this.state.redirect ? (
-      <Redirect to={"/dashboard"} />
-    ) : (
+  const handleDialogOpen = (value) => {
+    setNewUserOpen(value)
+  }
+  return redirect ? (
+    <Redirect to={"/dashboard"} />
+  ) : (
       <div className={classes.userSelectorWrapper}>
         <Paper className={classes.paper}>
           <FormControl className={classes.formControl}>
@@ -58,7 +63,7 @@ class UserSelector extends Component {
               id="user-selector"
               labelId="select-current-user-label"
               value={authedUser || ""}
-              onChange={this.handleCurrentUserChange}
+              onChange={handleCurrentUserChange}
             >
               {users.map((user) => (
                 <MenuItem key={user.id} value={user.id}>
@@ -70,10 +75,22 @@ class UserSelector extends Component {
               ))}
             </Select>
           </FormControl>
+          <Button color="primary" className={classes.signUpButton} onClick={() => handleDialogOpen(true)}>
+            Sign up
+          </Button>
         </Paper>
+        {/* New User Dialog */}
+        <Dialog
+          onClose={() => handleDialogOpen(false)}
+          aria-labelledby="simple-dialog-title"
+          open={newUserOpen}
+        >
+          <DialogTitle onClose={() => handleDialogOpen(false)} />
+          {/* New user Form */}
+          skdjslkdjsldksjdslkdj
+        </Dialog>
       </div>
     );
-  }
 }
 UserSelector.propTypes = {
   classes: PropTypes.object.isRequired,

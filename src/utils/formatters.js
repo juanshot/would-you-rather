@@ -3,4 +3,4 @@ export const fromTimestampToDate = (timestamp) => {
   return dateFormatted.slice(3, dateFormatted.length);
 };
 
-export const sortByTimestamp = (a, b) => b.timestamp - a.timestamp;
+export const sortBy = (field) => (a, b) => b[field] - a[field];
