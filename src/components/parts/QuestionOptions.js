@@ -30,10 +30,10 @@ const QuestionOptions = (props) => {
 };
 
 QuestionOptions.propTypes = {
-  handleAnswer: PropTypes.func,
-  optionOne: PropTypes.object,
-  optionTwo: PropTypes.object,
-  userHasVoted: PropTypes.bool,
+  handleAnswer: PropTypes.func.isRequired,
+  optionOne: PropTypes.object.isRequired,
+  optionTwo: PropTypes.object.isRequired,
+  userHasVoted: PropTypes.bool.isRequired,
 };
 
 export default QuestionOptions;

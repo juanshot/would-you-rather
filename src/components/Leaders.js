@@ -1,16 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
+import React from "react";
+import { connect } from "react-redux";
+import { makeStyles, List } from "@material-ui/core";
+import PageTitle from "./parts/PageTitle";
 import UserOverview from "./parts/UserOverview";
-import WithNavbar from './hoc/WithNavbar';
+import WithNavbar from "./hoc/WithNavbar";
 
-import { checkIfUserHasAnswered, checkIfUserIsAuthor } from "./../utils/validators";
+import {
+  checkIfUserHasAnswered,
+  checkIfUserIsAuthor,
+} from "./../utils/validators";
 import { sortBy } from "./../utils/formatters";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: "100%",
     backgroundColor: theme.palette.background.paper,
   },
 }));
@@ -19,30 +22,27 @@ const Leaders = (props) => {
   const classes = useStyles();
   return (
     <WithNavbar>
+      <PageTitle title="Leaders" />
       <List className={classes.root}>
-        {
-          props.leaders.map((leader, key) => (
-            <UserOverview key={key} user={props.users[leader.id]} />
-          ))
-        }
+        {props.leaders.map((leader, key) => (
+          <UserOverview key={key} user={props.users[leader.id]} />
+        ))}
       </List>
     </WithNavbar>
   );
-}
+};
 
 const mapStateToProps = ({ users, questions }) => ({
   leaders: Object.keys(users)
-    .map(userKey => ({
+    .map((userKey) => ({
       id: userKey,
-      answered: Object
-        .values(questions)
-        .filter(checkIfUserHasAnswered(userKey)).length,
-      asked: Object
-        .values(questions)
-        .filter(checkIfUserIsAuthor(userKey)).length
+      answered: Object.values(questions).filter(checkIfUserHasAnswered(userKey))
+        .length,
+      asked: Object.values(questions).filter(checkIfUserIsAuthor(userKey))
+        .length,
     }))
-    .sort(sortBy('answered')),
-  users
+    .sort(sortBy("answered")),
+  users,
 });
 
 export default connect(mapStateToProps)(Leaders);

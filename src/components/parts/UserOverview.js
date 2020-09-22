@@ -1,9 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Avatar from "@material-ui/core/Avatar";
-import CardHeader from "@material-ui/core/CardHeader";
-import Typography from "@material-ui/core/Typography";
+import { Avatar, CardHeader, Typography } from "@material-ui/core";
 
 import {
   checkIfUserHasAnswered,
@@ -26,7 +24,7 @@ const UserOverview = (props) => {
 };
 
 UserOverview.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = ({ questions }, { user }) => ({

@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
-import FormControl from "@material-ui/core/FormControl";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import Chip from "@material-ui/core/Chip";
-import Dialog from "@material-ui/core/Dialog";
+import { withStyles } from "@material-ui/styles";
+import {
+  Avatar,
+  Button,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+} from "@material-ui/core";
 
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Paper from "@material-ui/core/Paper";
-import Select from "@material-ui/core/Select";
-
-import DialogTitle from './parts/DialogTitle';
+import RegistrationDialog from "./RegistrationDialog";
 import { setAuthedUser } from "../store/actions/authedUser";
 
 const styles = (theme) => ({
@@ -25,7 +25,7 @@ const styles = (theme) => ({
   },
   paper: {
     padding: 20,
-    minWidth: 500,
+    width: 400,
     backgroundColor: "#cccccc0f",
     color: "white",
   },
@@ -33,8 +33,8 @@ const styles = (theme) => ({
     width: "100%",
   },
   signUpButton: {
-    marginTop: '15px',
-  }
+    marginTop: "15px",
+  },
 });
 
 const UserSelector = (props) => {
@@ -50,48 +50,44 @@ const UserSelector = (props) => {
     setRedirect(true);
   };
   const handleDialogOpen = (value) => {
-    setNewUserOpen(value)
-  }
+    setNewUserOpen(value);
+  };
   return redirect ? (
     <Redirect to={"/dashboard"} />
   ) : (
-      <div className={classes.userSelectorWrapper}>
-        <Paper className={classes.paper}>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="select-current-user-label">Select User</InputLabel>
-            <Select
-              id="user-selector"
-              labelId="select-current-user-label"
-              value={authedUser || ""}
-              onChange={handleCurrentUserChange}
-            >
-              {users.map((user) => (
-                <MenuItem key={user.id} value={user.id}>
-                  <Chip
-                    avatar={<Avatar alt={user.id} src={user.avatarURL} />}
-                    label={user.name}
-                  />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <Button color="primary" className={classes.signUpButton} onClick={() => handleDialogOpen(true)}>
-            Sign up
-          </Button>
-        </Paper>
-        {/* New User Dialog */}
-        <Dialog
-          onClose={() => handleDialogOpen(false)}
-          aria-labelledby="simple-dialog-title"
-          open={newUserOpen}
+    <div className={classes.userSelectorWrapper}>
+      <Paper className={classes.paper}>
+        <FormControl className={classes.formControl}>
+          <InputLabel id="select-current-user-label">Select User</InputLabel>
+          <Select
+            id="user-selector"
+            labelId="select-current-user-label"
+            value={authedUser || ""}
+            onChange={handleCurrentUserChange}
+          >
+            {users.map((user) => (
+              <MenuItem key={user.id} value={user.id}>
+                <Chip
+                  avatar={<Avatar alt={user.id} src={user.avatarURL} />}
+                  label={user.name}
+                />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          color="primary"
+          className={classes.signUpButton}
+          onClick={() => handleDialogOpen(true)}
         >
-          <DialogTitle onClose={() => handleDialogOpen(false)} />
-          {/* New user Form */}
-          skdjslkdjsldksjdslkdj
-        </Dialog>
-      </div>
-    );
-}
+          Sign up
+        </Button>
+      </Paper>
+      {/* New User Dialog */}
+      <RegistrationDialog isOpen={newUserOpen} onChange={handleDialogOpen} />
+    </div>
+  );
+};
 UserSelector.propTypes = {
   classes: PropTypes.object.isRequired,
 };

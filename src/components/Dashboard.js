@@ -2,16 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Dialog from "@material-ui/core/Dialog";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import WithNavBar from "./hoc/WithNavbar";
+import { AppBar, Dialog, Tabs, Tab } from "@material-ui/core";
+
 import TabPanel from "./parts/TabPanel";
 import QuestionList from "./parts/QuestionList";
 import QuestionDetail from "./QuestionDetail";
-import DialogTitle from './parts/DialogTitle';
+import DialogTitle from "./parts/DialogTitle";
 
+import WithNavBar from "./hoc/WithNavbar";
 import { checkIfUserHasAnswered } from "./../utils/validators";
 import { sortBy } from "./../utils/formatters";
 
@@ -84,8 +82,7 @@ const Dashboard = (props) => {
         aria-labelledby="question-dialog"
         open={dialogOpen}
       >
-        <DialogTitle onClose={handleDialogClose}>
-        </DialogTitle>
+        <DialogTitle onClose={handleDialogClose}></DialogTitle>
         <QuestionDetail questionId={currentQuestionId} />
       </Dialog>
     </WithNavBar>
@@ -103,12 +100,12 @@ const mapStateToProps = ({ authedUser, questions, users }) => {
   return {
     answeredQuestions: mappedQuestionsWithUsers
       .filter(checkIfUserHasAnswered(authedUser))
-      .sort(sortBy('timestamp')),
+      .sort(sortBy("timestamp")),
     unAnsweredQuestions: mappedQuestionsWithUsers
       .filter((question) => {
         return !checkIfUserHasAnswered(authedUser)(question);
       })
-      .sort(sortBy('timestamp')),
+      .sort(sortBy("timestamp")),
   };
 };
 

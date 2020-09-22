@@ -2,12 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import {
+  Box,
+  Card,
+  CardActions,
+  CardActionArea,
+  CardContent,
+  Typography,
+} from "@material-ui/core";
 
 import UserOverview from "./parts/UserOverview";
 import QuestionAnswersDetail from "./parts/QuestionAnswersDetail";
@@ -84,7 +86,7 @@ const QuestionDetail = (props) => {
 };
 
 QuestionDetail.propTypes = {
-  questionId: PropTypes.string.isRequired
+  questionId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = ({ questions, users, authedUser }, { questionId }) => ({

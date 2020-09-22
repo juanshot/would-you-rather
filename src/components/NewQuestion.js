@@ -1,46 +1,55 @@
-import React, { useRef, useState } from 'react';
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
-import { makeStyles } from '@material-ui/core/styles';
-import WithNavbar from './hoc/WithNavbar';
-import { handleSaveQuestion } from './../store/actions/questions'
+import React, { useRef, useState } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import SaveIcon from "@material-ui/icons/Save";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button, TextField } from "@material-ui/core";
+import PageTitle from "./parts/PageTitle";
+import WithNavbar from "./hoc/WithNavbar";
+import { handleSaveQuestion } from "./../store/actions/questions";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    '& .MuiTextField-root': {
+    marginTop: theme.spacing(2),
+    "& .MuiTextField-root": {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      width: '25ch',
-    }
+      width: "25ch",
+    },
   },
   formElements: {
-    display: 'flex'
-  }
-}))
+    display: "flex",
+  },
+}));
 
 const NewQuestion = (props) => {
   const classes = useStyles();
-  const [isFormValid, setFormValid] = useState(false)
+  const [isFormValid, setFormValid] = useState(false);
   const optionOneInput = useRef(null);
   const optionTwoInput = useRef(null);
   const handleSubmit = () => {
     const { dispatch } = props;
-    dispatch(handleSaveQuestion({
-      optionOneText: optionOneInput.current.value,
-      optionTwoText: optionTwoInput.current.value,
-      author: props.authedUser
-    }));
-    props.history.push('/dashboard')
-  }
+    dispatch(
+      handleSaveQuestion({
+        optionOneText: optionOneInput.current.value,
+        optionTwoText: optionTwoInput.current.value,
+        author: props.authedUser,
+      })
+    );
+    props.history.push("/dashboard");
+  };
   const handleChange = () => {
-    const formValidation = !!((optionOneInput.current && optionOneInput.current.value) && (optionTwoInput.current && optionTwoInput.current.value));
-    setFormValid(formValidation)
-  }
+    const formValidation = !!(
+      optionOneInput.current &&
+      optionOneInput.current.value &&
+      optionTwoInput.current &&
+      optionTwoInput.current.value
+    );
+    setFormValid(formValidation);
+  };
   return (
     <WithNavbar>
+      <PageTitle title="New Question" />
       <form noValidate autoComplete="off" className={classes.form}>
         <div className={classes.formElements}>
           <TextField
@@ -71,11 +80,11 @@ const NewQuestion = (props) => {
         </div>
       </form>
     </WithNavbar>
-  )
+  );
 };
 
 const mapStateToProps = ({ authedUser }) => ({
-  authedUser
+  authedUser,
 });
 
 export default connect(mapStateToProps)(withRouter(NewQuestion));
