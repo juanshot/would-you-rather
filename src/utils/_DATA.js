@@ -173,6 +173,26 @@ export function _saveQuestion(question) {
     }, 1000);
   });
 }
+export function _saveUser(user) {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      users = {
+        ...users,
+        ...user,
+      };
+      res(users);
+    }, 1000);
+  });
+}
+
+export function _removeUser(user) {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      delete users[user.id];
+      res(users);
+    }, 1000);
+  });
+}
 
 export function _saveQuestionAnswer({ authedUser, qid, answer }) {
   return new Promise((res, rej) => {

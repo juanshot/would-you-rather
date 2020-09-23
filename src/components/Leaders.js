@@ -41,7 +41,7 @@ const mapStateToProps = ({ users, questions }) => ({
       asked: Object.values(questions).filter(checkIfUserIsAuthor(userKey))
         .length,
     }))
-    .sort(sortBy("answered")),
+    .sort(sortBy("answered", "asked")),
   users,
 });
 

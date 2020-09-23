@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import DialogTitle from "./parts/DialogTitle";
 import NewUser from "./parts/NewUser";
-import { addUser } from "./../store/actions/users";
+import { handleSaveUser } from "./../store/actions/users";
 import { formatUserRequest } from "./../utils/formatters";
 
 const RegistrationDialog = (props) => {
@@ -23,7 +23,7 @@ const RegistrationDialog = (props) => {
   };
   const saveUser = () => {
     const { dispatch } = props;
-    dispatch(addUser(formatUserRequest(newUserReq)));
+    dispatch(handleSaveUser(formatUserRequest(newUserReq)));
     props.onChange(false);
   };
   return (

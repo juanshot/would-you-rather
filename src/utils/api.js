@@ -3,6 +3,8 @@ import {
   _getUsers,
   _saveQuestion,
   _saveQuestionAnswer,
+  _saveUser,
+  _removeUser,
 } from "./_DATA";
 
 export const getInitialData = () => {
@@ -19,4 +21,11 @@ export const saveQuestion = (question) => {
 
 export const saveQuestionAnswer = (questionAnswer) => {
   return _saveQuestionAnswer(questionAnswer);
+};
+
+export const saveUser = (user) => {
+  return _saveUser(user);
+};
+export const removeUser = (user) => {
+  return _removeUser(user);
 };
