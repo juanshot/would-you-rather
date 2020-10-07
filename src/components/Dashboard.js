@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { AppBar, Dialog, Tabs, Tab } from "@material-ui/core";
 
@@ -32,7 +32,8 @@ const Dashboard = (props) => {
   const theme = useTheme();
   const [tabValue, setTabValue] = React.useState(0);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [currentQuestionId, setCurrentQuestionId] = React.useState(null);
+  const [currentQuestionId] = React.useState(null);
+  const history = useHistory();
 
   const handleTabChange = (_, newValue) => {
     setTabValue(newValue);
@@ -43,8 +44,7 @@ const Dashboard = (props) => {
   };
 
   const handleSelect = (id) => {
-    setCurrentQuestionId(id);
-    setDialogOpen(true);
+    history.push(`/questions/${id}`);
   };
 
   return (

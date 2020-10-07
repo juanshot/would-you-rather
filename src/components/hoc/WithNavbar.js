@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -12,7 +12,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { setAuthedUser } from "./../../store/actions/authedUser";
 import Spinner from "../parts/Spinner";
 import UserSessionMenu from "../parts/UserSessionMenu";
-import NAVIGATION from "../../constants/navigation";
+
+import routes from "./../../routes";
 
 function a11yProps(index) {
   return {
@@ -37,8 +38,19 @@ const useStyles = makeStyles((theme) => ({
 function WithNavBar(props) {
   const classes = useStyles();
   const [redirect, setRedirect] = useState(false);
+  const [tabIndex, setTabIndex] = useState(0);
+  const navigationRoutes = routes.filter((route) => route.menuItem);
+
+  useEffect(() => {
+    const currentNavigationIndex = navigationRoutes
+      .map((nav) => nav.path)
+      .indexOf(props.history.location.pathname);
+    setTabIndex(currentNavigationIndex > 0 ? currentNavigationIndex : 0);
+  }, [props.history.location.pathname, navigationRoutes]);
+
   const handleChange = (_, value) => {
-    props.history.push(value);
+    setTabIndex(value);
+    props.history.push(navigationRoutes[value].path);
   };
   const handleLogout = () => {
     const { dispatch } = props;
@@ -54,14 +66,14 @@ function WithNavBar(props) {
       <AppBar className={classes.appBar} position="static">
         <Toolbar disableGutters={true} className={classes.toolBar}>
           <Tabs
-            value={props.history.location.pathname}
+            value={tabIndex}
             onChange={handleChange}
             aria-label="option tabs"
           >
-            {NAVIGATION.map((navigation, index) => (
+            {navigationRoutes.map((navigation, index) => (
               <Tab
-                label={navigation.label}
-                value={navigation.path}
+                label={navigation.name}
+                value={index}
                 key={index}
                 {...a11yProps(index)}
               ></Tab>

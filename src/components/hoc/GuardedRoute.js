@@ -5,7 +5,11 @@ const GuardedRoute = ({ component: Component, authenticated, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      authenticated === true ? <Component {...props} /> : <Redirect to="/" />
+      authenticated === true ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+      )
     }
   />
 );

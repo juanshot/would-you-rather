@@ -1,8 +1,7 @@
 import { saveUser, removeUser } from "./../../utils/api";
 import { setIsLoading } from "./system";
 import { handleInitialData } from "./shared";
-export const FETCH_USERS = "FETCH_USERS";
-export const ADD_USER = "ADD_USER";
+import { ADD_USER, FETCH_USERS } from "./types";
 
 export const fetchUsers = (users) => {
   return {

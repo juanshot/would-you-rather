@@ -1,9 +1,8 @@
-export const IS_LOADING = 'IS_LOADING';
+import { IS_LOADING } from "./types";
 
-
-export const setIsLoading = isLoading => {
+export const setIsLoading = (isLoading) => {
   return {
     type: IS_LOADING,
-    isLoading
-  }
-}
+    isLoading,
+  };
+};

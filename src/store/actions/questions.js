@@ -1,8 +1,7 @@
 import { saveQuestion, saveQuestionAnswer } from "../../utils/api";
 import { handleInitialData } from "./shared";
 import { setIsLoading } from "./system";
-
-export const FETCH_QUESTIONS = "FETCH_QUESTIONS";
+import { FETCH_QUESTIONS } from "./types";
 
 export const fetchQuestions = (questions) => ({
   type: FETCH_QUESTIONS,
@@ -10,12 +9,11 @@ export const fetchQuestions = (questions) => ({
 });
 
 export function handleSaveQuestion(newQuestionReq) {
+  setIsLoading(true);
   return (dispatch) => {
-    dispatch(setIsLoading(true));
     return saveQuestion(newQuestionReq)
       .then(() => {
         dispatch(handleInitialData());
-        dispatch(setIsLoading(false));
       })
       .catch((err) => {
         console.error(err);
@@ -25,11 +23,9 @@ export function handleSaveQuestion(newQuestionReq) {
 
 export const handleSaveQuestionAnswer = (questionAnswerReq) => {
   return (dispatch) => {
-    dispatch(setIsLoading(true));
     return saveQuestionAnswer(questionAnswerReq)
       .then(() => {
         dispatch(handleInitialData());
-        dispatch(setIsLoading());
       })
       .catch((err) => console.error(err));
   };

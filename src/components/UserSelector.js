@@ -40,20 +40,24 @@ const styles = (theme) => ({
 const UserSelector = (props) => {
   const [newUserOpen, setNewUserOpen] = useState(false);
   const [redirect, setRedirect] = useState(false);
-  const { classes } = props;
-  const { users } = props;
-  const { authedUser } = props;
+  const [redirectUrl, setRedirectUrl] = useState("/");
+  const { authedUser, classes, users } = props;
+
   const handleCurrentUserChange = (e) => {
     const { value } = e.target;
-    const { dispatch } = props;
+    const { location, dispatch } = props;
     dispatch(setAuthedUser(value));
+    const { state } = location;
+    if (state && state.from) {
+      setRedirectUrl(state.from);
+    }
     setRedirect(true);
   };
   const handleDialogOpen = (value) => {
     setNewUserOpen(value);
   };
   return redirect ? (
-    <Redirect to={"/dashboard"} />
+    <Redirect to={redirectUrl} />
   ) : (
     <div className={classes.userSelectorWrapper}>
       <Paper className={classes.paper}>

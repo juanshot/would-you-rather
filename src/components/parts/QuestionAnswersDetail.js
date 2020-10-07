@@ -20,7 +20,7 @@ const QuestionAnswersDetail = (props) => {
       <List>
         <ListItem>
           <ListItemText>
-            <Typography>
+            <Typography variant="h6">
               You have voted for : {props[props.userSelection].text}
             </Typography>
           </ListItemText>
