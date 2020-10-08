@@ -40,7 +40,7 @@ const styles = (theme) => ({
 const UserSelector = (props) => {
   const [newUserOpen, setNewUserOpen] = useState(false);
   const [redirect, setRedirect] = useState(false);
-  const [redirectUrl, setRedirectUrl] = useState("/");
+  const [redirectUrl, setRedirectUrl] = useState("/dashboard");
   const { authedUser, classes, users } = props;
 
   const handleCurrentUserChange = (e) => {
