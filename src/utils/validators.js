@@ -7,3 +7,8 @@ export const checkIfUserHasAnswered = (authedUser) => (question) => {
 
 export const checkIfUserIsAuthor = (userId) => (question) =>
   question.author === userId;
+
+export const questionsExists = (questionId, questions) => {
+  const question = questions[questionId];
+  return Boolean(question);
+};

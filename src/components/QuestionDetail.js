@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { questionsExists } from "./../utils/validators";
 import {
   Box,
   Card,
@@ -37,6 +39,10 @@ const useStyles = makeStyles((theme) => ({
 
 const QuestionDetail = (props) => {
   const classes = useStyles();
+  // Redirect when the id is not Valid
+  if (props.redirect) {
+    return <Redirect to="/404" />;
+  }
   const optionOne = props.question.optionOne;
   const optionTwo = props.question.optionTwo;
   const { author, id } = props.question;
@@ -99,14 +105,19 @@ const mapStateToProps = (
   { match }
 ) => {
   const { question_id } = match.params;
-  return {
-    authedUser,
-    question: {
-      ...questions[question_id],
-      author: users[questions[question_id].author],
-    },
-    isLoading: Boolean(system.isLoading),
-  };
+  const isQuestionIdValid = questionsExists(question_id, questions);
+  return isQuestionIdValid
+    ? {
+        authedUser,
+        question: {
+          ...questions[question_id],
+          author: users[questions[question_id].author],
+        },
+        isLoading: Boolean(system.isLoading),
+      }
+    : {
+        redirect: true,
+      };
 };
 
 export default connect(mapStateToProps)(QuestionDetail);

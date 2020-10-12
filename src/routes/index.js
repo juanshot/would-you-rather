@@ -37,5 +37,5 @@ export default [
     component: QuestionDetail,
     menuItem: false,
   },
-  { path: "*", component: NotFound, menuItem: false },
+  { path: "*", component: NotFound, menuItem: false, notGuarded: true },
 ];
